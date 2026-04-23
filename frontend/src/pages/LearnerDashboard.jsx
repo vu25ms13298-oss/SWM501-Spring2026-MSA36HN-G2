@@ -51,6 +51,13 @@ export default function LearnerDashboard() {
           <p className="text-sm text-gray-500 mt-1">Trình độ</p>
         </div>
       </div>
+        {/* Smart Booking Info */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 mb-6">
+          <p className="text-sm text-blue-900">
+            <span className="font-semibold">✨ Smart Booking:</span> Hệ thống tự động ghép học viên cùng trình độ, đánh giá điểm phù hợp (0-100%), 
+            và đề xuất ca học tối ưu cho bạn. Mỗi ca tối đa 3 học viên, đặt trước 12 giờ được hoàn tín chỉ.
+          </p>
+        </div>
 
       {/* Next lesson */}
       {nextLesson && (

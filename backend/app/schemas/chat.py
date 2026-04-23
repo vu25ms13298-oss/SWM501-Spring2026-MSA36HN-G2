@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 from pydantic import BaseModel
 
@@ -13,6 +13,8 @@ class ChatMessageResponse(BaseModel):
     response: str
     intent: Optional[str] = None
     escalated: bool = False
+    api_limited: bool = False
+    suggested_questions: List[str] = []
 
 
 class ChatHistoryItem(BaseModel):

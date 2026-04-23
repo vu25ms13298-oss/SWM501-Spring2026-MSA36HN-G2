@@ -60,6 +60,21 @@ export default function AdminDashboard() {
 
       {/* Forecast Chart */}
       <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
+      {/* Smart System Info */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+          <p className="text-sm text-blue-900">
+            <span className="font-semibold">✨ Smart Booking:</span> Tự động ghép học viên cùng trình độ, 
+            tối ưu lịch, quản lý tín chỉ.
+          </p>
+        </div>
+        <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-4">
+          <p className="text-sm text-orange-900">
+            <span className="font-semibold">📊 Smart Forecast:</span> Dự báo 8 tuần, so sánh năng lực GV, 
+            cảnh báo nếu thiếu.
+          </p>
+        </div>
+      </div>
         <h2 className="text-lg font-semibold mb-4">Dự báo nhu cầu đặt lịch</h2>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={chartData}>
