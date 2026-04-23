@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import client from '../api/client'
 
 export default function AdminDashboard() {
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   const chartData = forecast.map(f => ({
     name: f.week,
     'Dự báo đặt lịch': f.predicted_bookings,
-    'Năng lực GV': f.instructor_capacity,
+    'Sức chứa giảng dạy': f.instructor_capacity,
   }))
 
   return (
@@ -75,7 +75,16 @@ export default function AdminDashboard() {
           </p>
         </div>
       </div>
-        <h2 className="text-lg font-semibold mb-4">Dự báo nhu cầu đặt lịch</h2>
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <h2 className="text-lg font-semibold">Dự báo nhu cầu đặt lịch</h2>
+          <div className="text-xs text-gray-500 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 max-w-md">
+            <p className="font-medium text-gray-700 mb-1">Chú thích nhanh</p>
+            <p>
+              <span className="font-semibold">Sức chứa giảng dạy</span> = tổng số lượt học viên mà đội ngũ giáo viên
+              có thể phục vụ trong tuần (tính theo ca dạy khả dụng x tối đa 3 HV/ca).
+            </p>
+          </div>
+        </div>
         <ResponsiveContainer width="100%" height={280}>
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -84,14 +93,28 @@ export default function AdminDashboard() {
             <Tooltip />
             <Legend />
             <Bar dataKey="Dự báo đặt lịch" fill="#3b82f6" />
-            <Bar dataKey="Năng lực GV" fill="#10b981" />
+            <Bar dataKey="Sức chứa giảng dạy" fill="#10b981" />
           </BarChart>
         </ResponsiveContainer>
+        <div className="mt-4 grid sm:grid-cols-2 gap-3 mb-4">
+          <div className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm text-blue-900">
+            <span className="font-semibold">Cách đọc:</span> nếu Dự báo đặt lịch lớn hơn Sức chứa giảng dạy,
+            tuần đó có nguy cơ quá tải.
+          </div>
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
+            <span className="font-semibold">Mẹo vận hành:</span> theo dõi tỷ lệ sử dụng; trên 90% nên chuẩn bị
+            tăng ca hoặc điều phối lại giáo viên.
+          </div>
+        </div>
         <div className="mt-3 space-y-1">
           {forecast.map(f => (
             <div key={f.week} className={`flex justify-between text-sm px-2 py-1 rounded ${f.alert ? 'bg-red-50 text-red-700' : 'text-gray-600'}`}>
               <span>Tuần {f.week}</span>
-              <span>Dự báo: {f.predicted_bookings} | Năng lực: {f.instructor_capacity} {f.alert ? '⚠️' : '✅'}</span>
+              <span>
+                Dự báo: {f.predicted_bookings} | Sức chứa: {f.instructor_capacity} |
+                {' '}Sử dụng: {Math.round((f.predicted_bookings / Math.max(f.instructor_capacity, 1)) * 100)}% |
+                {' '}Chênh lệch: {f.instructor_capacity - f.predicted_bookings} {f.alert ? '⚠️' : '✅'}
+              </span>
             </div>
           ))}
         </div>
